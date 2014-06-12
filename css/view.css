@@ -1,0 +1,7 @@
+*{margin: 0;padding: 0;}
+#container{ width: 320px; height: 580px;background: url(../img/background_1.png) repeat-y 0 0; position: relative; overflow: hidden; margin: 10px auto;}
+.myPlane{width: 66px;height: 80px;background:url(../img/myPlane.gif); position: absolute; bottom: 0; left: 45%;}
+.npc{width: 34px;height: 24px;background:url(../img/enemy1_fly_1.png); position: absolute; top: 0; left: 45%;}
+i{position: absolute; width: 6px; height: 14px; background:url(../img/bullet1.png);}
+.plane01{ display: block; position: absolute; width: 34px;height: 24px;background:url(../img/plane01.gif); }
+#score{position: absolute; left:0; top: 0; font: normal normal 14px/30px arial,"微软雅黑";}
