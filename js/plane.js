@@ -39,11 +39,17 @@ Plane.prototype.bang = function(){
 	bangObj.style.height = h+"px";
 	bangObj.className = "bang"+NO;	
 	document.getElementById("container").appendChild(bangObj);	
-	//0.24秒后移除爆炸动画
+	//0.2秒后移除爆炸动画
 	window.setTimeout(timer);
 	timer = window.setTimeout(function(){
 		document.getElementById("container").removeChild(bangObj);
-	},200);			
+	},400);			
+};
+//飞机销毁
+Plane.prototype.die = function(){
+	var _this = this;
+	document.getElementById("container").removeChild(_this.plane);
+	_this.outside = true;		
 };
 //我机
 function myPlane(){}
@@ -97,6 +103,10 @@ myPlane.prototype.move = function(state){
 	};
 	}
 };
+myPlane.prototype.stop = function(){
+	this.stage.onmouseover = null;
+	this.stage.onmousemove = null;
+};
 //敌机
 function npcPlane(){}
 npcPlane.prototype = new Plane();
@@ -109,10 +119,5 @@ npcPlane.prototype.appear = function(){
 	_this.plane.style.left = _this.position.x + "px";		
 	_this.plane.style.top = -_this.plane.offsetHeight + "px";	
 };
-//飞机销毁
-npcPlane.prototype.die = function(){
-	var _this = this;
-	document.getElementById("container").removeChild(_this.plane);
-	_this.outside = true;		
-};
+
 

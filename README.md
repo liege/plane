@@ -1,9 +1,9 @@
 微信打飞机小游戏
 ==================
-此版未完成，如果继续编写，可以完成预期功能，但码可读性差，将重写新版
+90% complete
 ------------------
 
-###留存备份
+###在线试玩
+[请戳这里](http://htmlpreview.github.io/?https://github.com/liege/plane/blob/master/index.html)
 
-
-### 80% complete
+###下一版本主要增加武器升级

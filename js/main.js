@@ -12,6 +12,7 @@ var game = {
 	gameSet:null,
 	stage:null
 };
+//初始化我机
 game.initMyPlane = function(){
 	this.myPlane = new myPlane();
 	this.myPlane.class = "myPlane";
@@ -24,15 +25,13 @@ game.run = function(){
 	var _this = this;
 	_this.num++;
 	_this.stage = document.getElementById("container");
-	//我机开火,push子弹		
 	
-	//
+	//控制开火节奏
 	if(_this.num%3==0){
+		//我机开火,push子弹		
 		_this.myPlane.fire();
 		_this.allBullet.push(_this.myPlane.bullets);
-	// console.log(zidan.bullet)
 	}
-	
 	//获取、遍历所有子弹对象
 	var allBulletLen = _this.allBullet.length;
 	for(var i=0;i<allBulletLen;i++){
@@ -58,7 +57,7 @@ game.run = function(){
 	if(_this.num%_this.planeDensity[1] == 0){
 		var npc = new npcPlane();
 		npc.class = "npc2";	
-		npc.armor = npc.score = 10;
+		npc.armor = npc.score = 5;
 		npc.speed = _this.planeSpeed[1];	
 		npc.show();
 		npc.appear();		
@@ -67,7 +66,7 @@ game.run = function(){
 	if(_this.num%_this.planeDensity[2] == 0){
 		var npc = new npcPlane();
 		npc.class = "npc3";		
-		npc.armor = npc.score = 20;
+		npc.armor = npc.score = 10;
 		npc.speed = _this.planeSpeed[2];	
 		npc.show();
 		npc.appear();
@@ -76,7 +75,7 @@ game.run = function(){
 	if(_this.num%_this.planeDensity[3] == 0){
 		var npc = new npcPlane();
 		npc.class = "npc4";		
-		npc.armor = npc.score = 30;
+		npc.armor = npc.score = 20;
 		npc.speed = _this.planeSpeed[3];	
 		npc.show();
 		npc.appear();
@@ -101,11 +100,14 @@ game.run = function(){
 			_this.over();
 		}
 	}
+	//敌机移动
 	for(var i=0;i<_this.allPlane.length;i++){
 		_this.allPlane[i].plane.style.top = _this.allPlane[i].plane.offsetTop + _this.allPlane[i].speed + "px";
 	}
+	//敌机与子弹碰撞
 	for(var j=0;j<_this.allBullet.length;j++){
 		_this.allBullet[j].bullet.style.top = _this.allBullet[j].bullet.offsetTop - _this.allBullet[j].speed + "px";
+		//命中
 		for(var i=0;i<_this.allPlane.length;i++){
 			//子弹敌机相撞
 			if(getCollision(_this.allBullet[j].bullet,_this.allPlane[i].plane)){
@@ -146,28 +148,39 @@ game.run = function(){
 		_this.planeDensity = [10,150,300,1000];
 	}
 };
+//游戏开始，初始化我机，场景运动开始
 game.begin = function(){
 	var _this =this;
+	if(!_this.myPlane){
 	_this.initMyPlane();
+	}else{
+		_this.myPlane.move();
+	}
 	_this.gameSet = window.setInterval(function(){
 		_this.run();
 	},_this.interval);	
 };
+//游戏暂停
 game.pause = function(){
 	var _this = this;
-	_this.myPlane.move(true);
-	//为何这里没法删除时间处理程序？
-	_this.myPlane.stage.onmousemove = null;
+	_this.myPlane.stop();
 	window.clearInterval(_this.gameSet);
-	_this.myPlane.plane.style.display = "none";
 };
+//游戏结束
 game.over = function(){
-	this.pause();
-	var info = document.getElementById("info"),
-		endScroe = document.getElementById("endScroe");
-	info.style.display = "block";
-	endScroe.innerHTML = this.scores*100;
+	var _this = this;
+	_this.myPlane.stop();
+	_this.myPlane.bang();
+	//得分统计
+	window.setTimeout(function(){
+		window.clearInterval(_this.gameSet);
+		var info = document.getElementById("info"),
+			endScroe = document.getElementById("endScroe");
+		info.style.display = "block";
+		endScroe.innerHTML = _this.scores*100;
+	},1500);
 };
+//文件载入
 onload = function(){
 	var begin = document.getElementById("begin"),
 		begin_btn = document.getElementById("begin_btn"),
