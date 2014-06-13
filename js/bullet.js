@@ -11,6 +11,7 @@ function Bullet(){
 	this.direction = null;
 	this.startPos = {x:0,y:0};
 	this.timer = null;
+	this.domClass = "";
 }
 //子弹销毁
 Bullet.prototype.die = function(){
@@ -23,6 +24,7 @@ Bullet.prototype.fire = function(){
 	var _this = this;
 	//创建子弹
 	_this.bullet = document.createElement("i");
+	_this.bullet.className = _this.domClass;
 	document.getElementById("container").appendChild(_this.bullet);
 	_this.bullet.style.left = _this.startPos.x + "px";
 	_this.bullet.style.top = _this.startPos.y + "px";

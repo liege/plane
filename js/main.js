@@ -3,14 +3,15 @@ var game = {
 	allPlane:[],
 	allBullet:[],
 	planeSpeed:[4,3,2,1],
-	planeDensity:[20,200,600,1500],
+	planeDensity:[20,200,600,1000],
 	interval:1000/24,
 	scores:0,
 	gameTime:0,
 	num:0,
 	stageBgY:0,
 	gameSet:null,
-	stage:null
+	stage:null,
+	killBossCount:0
 };
 //初始化我机
 game.initMyPlane = function(){
@@ -86,18 +87,18 @@ game.run = function(){
 	//获取、遍历所有飞机对象
 	var len = _this.allPlane.length;
 	for(var i=0;i<len;i++){
-		//判断飞机销毁或飞出界面
+		//判断飞机飞出界面
 		if( _this.allPlane[i].plane.offsetTop>_this.stage.offsetHeight){
 			_this.allPlane[i].die();
 		}	
-		//从数组清理出界活销毁的飞机	
-		if(_this.allPlane[i].outside){
-			_this.allPlane.splice(i,1);
-			len--;
-		}
 		//我机敌机碰撞
 		if(getCollision(_this.myPlane.plane,_this.allPlane[i].plane)){
 			_this.over();
+		}
+		//从数组清理出界或销毁的飞机	
+		if(_this.allPlane[i].outside){
+			_this.allPlane.splice(i,1);
+			len--;
 		}
 	}
 	//敌机移动
@@ -114,10 +115,22 @@ game.run = function(){
 				//子弹销毁
 				_this.allBullet[j].die();
 				//飞机护甲减少
-				_this.allPlane[i].armor--;
+				_this.allPlane[i].armor-=_this.allBullet[j].power;
 				if(_this.allPlane[i].armor<=0){
 					//得分
 					_this.scores += _this.allPlane[i].score;
+					//击杀boss获得奖励
+					if(_this.allPlane[i].class == "npc4"){
+						//第一次击杀
+						if(_this.myPlane.lv == 1){
+							_this.myPlane.lv++;
+						}
+						_this.killBossCount++;
+						//击杀n次boss得到最终武器
+						if(_this.killBossCount == 9){
+							_this.myPlane.lv++;
+						}
+					}					
 					//飞机爆炸
 					_this.allPlane[i].bang();						
 				}				
@@ -133,7 +146,7 @@ game.run = function(){
 	//游戏进度
 	if(_this.scores>20 && _this.scores<40){
 		_this.planeSpeed = [5,4,3,2];
-		_this.planeDensity = [15,200,600,1500];
+		_this.planeDensity = [15,200,600,1000];
 	}
 	if(_this.scores>40 && _this.scores<80){
 		_this.planeSpeed = [6,5,4,3];
@@ -147,6 +160,10 @@ game.run = function(){
 		_this.planeSpeed = [10,8,6,5];
 		_this.planeDensity = [10,150,300,1000];
 	}
+	if(_this.scores>300){
+		_this.planeSpeed = [12,10,8,4];
+		_this.planeDensity = [8,100,200,800];
+	}	
 };
 //游戏开始，初始化我机，场景运动开始
 game.begin = function(){
@@ -195,9 +212,17 @@ onload = function(){
 		E.stopPropagation();
 		E.cancelBubble = true;
 	};
-	stage.onclick = function(){
+	begin.onclick = function(e){
+		var E = e||event;
+		E.stopPropagation();
+		E.cancelBubble = true;	
+	};
+	stage.onclick = function(e){
+		var E = e||event;
 		pause.style.display = "block";
 		game.pause();
+		E.stopPropagation();
+		E.cancelBubble = true;			
 	};
 	pause_btn.onclick = function(e){
 		var E = e||event;	

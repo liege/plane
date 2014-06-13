@@ -7,7 +7,9 @@ body{font: normal normal 16px/30px arial,"微软雅黑"; }
 .npc2{width: 46px;height: 60px;background:url(../img/npc2.png); position: absolute; top: 0; left: 45%;}
 .npc3{width: 110px;height: 164px;background:url(../img/npc3.png); position: absolute; top: 0; left: 45%;}
 .npc4{width: 54px;height: 76px;background:url(../img/npc4.png); position: absolute; top: 0; left: 45%;}
-i{position: absolute; width: 6px; height: 14px; background:url(../img/bullet1.png);}
+#container i.lv1{position: absolute; width: 6px; height: 14px; background:url(../img/bullet1.png);}
+#container i.lv2{position: absolute; width: 32px; height: 39px; background:url(../img/bullet2.png);}
+#container i.lv3{position: absolute; width: 66px; height: 62px; background:url(../img/bullet3.png);}
 #container span{display: block;position: absolute;}
 .bang1{ background:url(../img/plane1.gif); }
 .bang2{background:url(../img/plane2.gif);  }
